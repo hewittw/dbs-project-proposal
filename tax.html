@@ -204,7 +204,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
   <!-- 1 -->
   <section id="one-line" aria-labelledby="h-one">
     <div class="eyebrow"><span class="idx">01</span><span id="h-one">One-line description</span></div>
-    <p class="oneliner" style="margin-top:18px">Freelancers and first-year small business owners don't know which tax deadlines apply to them, because free calendars list every date for everyone. This asks a few questions about your business, then keeps your own deadlines up to date in the calendar app you already use.</p>
+    <p class="oneliner" style="margin-top:18px">Every business has its own tax calendar. Which deadlines apply depends on what you do: your entity type, state, industry, payroll, contractors and more. It's so specific that free calendars just list every date for everyone. This asks a few questions about your business, then keeps your own deadlines up to date in the calendar app you already use.</p>
     <div class="draft-row"><span class="draft">DRAFT · edit in my words</span></div>
   </section>
 
@@ -312,8 +312,8 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
     </div>
 
     <div class="opts">
-      <div class="opt"><span class="k">Open option · not decided</span><h4>Narrow the first user</h4><p>First-year LLC owner, or freelancer paying quarterly estimates, or small business with single-state payroll?</p>
-        <p class="lean"><b>Leaning</b>Illinois freelancers and 1-owner LLCs paying estimates, plus S-corps with a small payroll. That's two entity types and one state.</p></div>
+      <div class="opt"><span class="k">Open option · not decided</span><h4>Businesses in general, built up rule by rule</h4><p>The user is any business, not just first-year owners. The calendar depends on what you do, so the scope grows by rules (entity types, states, industries) rather than by narrowing the user.</p>
+        <p class="lean"><b>Leaning</b>v1 rules cover federal + Illinois for the most common setups (sole prop / 1-owner LLC, S-corp, payroll, contractors). More entity types, states and industry-specific rules get added as data, without changing the app.</p></div>
       <div class="opt"><span class="k">Open option · not decided</span><h4>Subscribable feed</h4><p>An iCal / Google Calendar feed that shows up in the calendar you already use, instead of a page you have to check.</p>
         <p class="lean"><b>Leaning</b>Do it in v1. Google only refreshes feeds every 12 to 24 hours, so changed dates also go out by email.</p></div>
       <div class="opt"><span class="k">Open option · not decided</span><h4>AI builds it</h4><p>AI reads your situation and builds the calendar for you.</p>
@@ -407,7 +407,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
     <h2 id="h-risks">Risks</h2>
     <ul class="risks">
       <li><span>R1</span><div>Accuracy and liability. What happens if a deadline is wrong? <em>Every date links to its official source with a "last verified" date. "Not tax advice" goes on the page, in emails, and in every feed event. Tests check the engine against Pub 509.</em></div></li>
-      <li><span>R2</span><div>Which narrow first user to start with. <em>Leaning toward Illinois freelancers and 1-owner LLCs. Mom's contacts are the most realistic way to reach them.</em></div></li>
+      <li><span>R2</span><div>How to cover businesses in general when every one is so specific. <em>Start with the most common federal + Illinois rules, then add rules as data. Mom's clients are the most realistic first testers.</em></div></li>
       <li><span>R3</span><div>Where the rules data comes from, and how it stays current. <em>No official machine-readable feed: the IRS and Illinois publish HTML and PDFs. Rules are entered by hand, so v1 stays small. The IRS posts next year's Pub 509 draft early, so I can review changes once a year.</em></div></li>
       <li><span>R4</span><div>Disaster extensions are by county and come out with no schedule, and there's no IRS RSS feed. <em>v1: I add them by hand. v2: a watcher using FEMA's open data flags them for my review.</em></div></li>
       <li><span>R5</span><div>Collective already offers a free subscribable federal calendar. <em>My edge has to be personal dates, state deadlines, and change alerts.</em></div></li>
