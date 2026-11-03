@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Setup Builder · Proposal · Hewitt Watkins</title>
+<meta name="description" content="Draft project proposal: Claude Setup Builder, a harness marketplace. Upload your whole Claude setup with one skill, then install it, or someone else's, in any new folder.">
+<style>
+:root{
+  --bg:#f7f6f2; --fg:#16181c; --dim:rgba(22,24,28,.70); --faint:rgba(22,24,28,.48);
+  --line:rgba(0,0,0,.10); --line2:rgba(0,0,0,.20);
+  --ign:#c2410c; --ign-soft:rgba(194,65,12,.09);
+  --card:#ffffff;
+  --din:"D-DIN","DIN Alternate","DIN Next LT Pro","Barlow","Helvetica Neue",Arial,sans-serif;
+  --dinc:"DIN Condensed","D-DIN Condensed","Barlow Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --sans:"Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  --top-h:60px; --hud-h:44px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:smooth}
+body{background-color:var(--bg);background-image:radial-gradient(rgba(22,24,28,.09) 1px,transparent 1.2px);background-size:24px 24px;background-attachment:fixed;
+  color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55;
+  padding-top:var(--top-h);padding-bottom:var(--hud-h);overflow-x:hidden}
+a{color:inherit}
+::selection{background:var(--ign);color:#fff}
+
+/* ===== top nav (shared) ===== */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top-h);z-index:900;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:0 32px;background:rgba(247,246,242,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.wordmark{font:700 18px/1 var(--dinc);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.topnav{display:flex;gap:26px}
+.topnav a{font:700 11px/1 var(--din);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--dim);padding:6px 0;white-space:nowrap;transition:color .2s}
+.topnav a:hover{color:var(--fg)}
+.topnav a[aria-current="page"]{color:var(--ign)}
+
+/* ===== bottom HUD ===== */
+.hud{position:fixed;left:0;right:0;bottom:0;height:var(--hud-h);z-index:800;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 16px;
+  background:rgba(247,246,242,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);
+  font:600 10px/1.2 var(--mono);letter-spacing:.18em;color:var(--dim);text-align:center}
+.hud i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--ign)}
+
+/* ===== layout ===== */
+main{max-width:1080px;margin:0 auto;padding:0 6vw}
+.eyebrow{font:600 11px/1.3 var(--mono);letter-spacing:.2em;color:var(--dim);text-transform:uppercase;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.eyebrow .idx{color:var(--ign)}
+.hero{padding:90px 0 60px;border-bottom:1px solid var(--line)}
+.hero h1{font:700 clamp(46px,8vw,104px)/.88 var(--dinc);text-transform:uppercase;letter-spacing:.01em;margin:18px 0 26px}
+.oneliner{font:400 clamp(18px,1.9vw,23px)/1.45 var(--sans);color:var(--fg);max-width:740px}
+.sec{padding:72px 0;border-bottom:1px solid var(--line)}
+.sec h2{font:700 clamp(32px,4.6vw,56px)/.92 var(--dinc);text-transform:uppercase;letter-spacing:.01em;margin:14px 0 26px}
+.lede{color:var(--dim);max-width:660px;font-size:15.5px}
+.lede + .lede{margin-top:10px}
+.lede b{color:var(--fg);font-weight:600}
+h3.sub{font:600 11px/1.3 var(--mono);letter-spacing:.18em;color:var(--dim);text-transform:uppercase;margin:34px 0 12px}
+
+/* ===== tags ===== */
+.draft{display:inline-block;font:700 9.5px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ign);
+  border:1px solid var(--ign);padding:2px 7px;border-radius:3px;white-space:nowrap;vertical-align:middle;margin-bottom:12px}
+.todo{display:inline-block;font:700 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ign);
+  background:var(--ign-soft);border:1px dashed var(--ign);padding:5px 9px}
+.tag-agent{font:600 9.5px/1 var(--mono);letter-spacing:.14em;color:var(--dim);border:1px solid var(--line2);padding:3px 6px;margin-left:8px;vertical-align:2px;white-space:nowrap;display:inline-block}
+
+/* ===== interviews ===== */
+.people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.person{background:var(--card);border:1px solid var(--line);padding:26px 24px 24px;display:flex;flex-direction:column;gap:14px}
+.person .k{font:600 10px/1 var(--mono);letter-spacing:.18em;color:var(--dim);text-transform:uppercase}
+.person .who{font:700 24px/1 var(--dinc);letter-spacing:.08em;text-transform:uppercase}
+.person blockquote{font:400 17px/1.45 var(--sans);color:var(--fg);border-left:2px solid var(--ign);padding-left:14px}
+.person .note{font-size:13.5px;color:var(--dim)}
+.mine{margin-top:22px;font-size:14px;color:var(--dim);max-width:720px}
+.mine q{color:var(--fg)}
+
+/* ===== mock ===== */
+.mock{margin-top:34px;border:1px solid var(--line2);background:var(--card);position:relative}
+.mock-bar{display:flex;justify-content:space-between;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line);font:600 10px/1.2 var(--mono);letter-spacing:.18em;color:var(--dim)}
+.mock-bar b{color:var(--ign);font-weight:600}
+.mock-body{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);}
+.contents{list-style:none;border-right:1px solid var(--line)}
+.grp{border-bottom:1px solid var(--line)}
+.grp:last-child{border-bottom:0}
+.grp-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:12px;align-items:start;padding:14px 14px 14px 20px}
+.grp-txt{min-width:0;cursor:pointer}
+.grp .gn{font:700 16px/1.1 var(--dinc);letter-spacing:.1em;text-transform:uppercase}
+.grp .gf{font:500 11.5px/1.5 var(--mono);color:var(--dim);margin-top:4px;overflow-wrap:anywhere}
+.grp .gc{font:600 11px/1.4 var(--mono);color:var(--ign);letter-spacing:.08em;white-space:nowrap;margin-top:2px}
+.grp.off .gn,.grp.off .gf{text-decoration:line-through;text-decoration-color:var(--line2)}
+.grp.off .gc{color:var(--dim)}
+.chev{flex:none;width:28px;height:28px;margin-top:-4px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--dim);cursor:pointer;display:grid;place-items:center}
+.chev:hover{border-color:var(--line2);color:var(--fg)}
+.chev:focus-visible{outline:2px solid var(--ign);outline-offset:2px}
+.chev svg{transition:transform .2s}
+.chev[aria-expanded="true"]{color:var(--ign);border-color:var(--ign)}
+.chev[aria-expanded="true"] svg{transform:rotate(90deg)}
+.items{list-style:none;padding:0 20px 14px 70px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:2px 14px}
+.items[hidden]{display:none}
+.items.wide{grid-template-columns:minmax(0,1fr)}
+.it{display:inline-flex;align-items:center;gap:8px;font:500 12px/1.3 var(--mono);color:var(--fg);cursor:pointer;padding:5px 0;min-width:0;overflow-wrap:anywhere}
+.it input{accent-color:var(--ign);width:15px;height:15px;flex:none;margin:0;cursor:pointer}
+.it input:focus-visible{outline:2px solid var(--ign);outline-offset:2px}
+.it small{font:500 11px/1.3 var(--mono);color:var(--dim)}
+.it.off span{color:var(--dim);text-decoration:line-through}
+.srv{border-top:1px dashed var(--line)}
+.srv:first-child{border-top:0}
+.srv-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tbtn{flex:none;display:inline-flex;align-items:center;gap:6px;font:600 10.5px/1 var(--mono);letter-spacing:.06em;color:var(--dim);background:var(--card);border:1px solid var(--line2);border-radius:3px;padding:6px 8px;cursor:pointer}
+.tbtn:hover{color:var(--fg)}
+.tbtn:focus-visible{outline:2px solid var(--ign);outline-offset:2px}
+.tbtn svg{transition:transform .2s}
+.tbtn[aria-expanded="true"]{color:var(--ign);border-color:var(--ign)}
+.tbtn[aria-expanded="true"] svg{transform:rotate(90deg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:2px 0 10px 23px}
+.chips[hidden]{display:none}
+.chip{font:600 10.5px/1 var(--mono);letter-spacing:.04em;padding:6px 8px;border-radius:3px;cursor:pointer;border:1px solid var(--ign);background:var(--ign-soft);color:var(--ign)}
+.chip::before{content:"\2713  "}
+.chip[aria-pressed="false"]{border-color:var(--line2);background:var(--card);color:var(--dim);text-decoration:line-through}
+.chip[aria-pressed="false"]::before{content:""}
+.chip:disabled{cursor:not-allowed;border-style:dashed;border-color:var(--line2);background:var(--card);color:var(--dim)}
+.chip:focus-visible{outline:2px solid var(--ign);outline-offset:2px}
+.sw{flex:none;width:36px;height:20px;border-radius:10px;border:1px solid var(--line2);background:var(--bg);position:relative;cursor:pointer;margin-top:1px;transition:background .2s,border-color .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:var(--dim);transition:transform .2s,background .2s}
+.sw[aria-checked="true"]{background:var(--ign);border-color:var(--ign)}
+.sw[aria-checked="true"]::after{transform:translateX(16px);background:#fff}
+.sw[aria-checked="mixed"]{background:var(--ign-soft);border-color:var(--ign)}
+.sw[aria-checked="mixed"]::after{transform:translateX(8px);background:var(--ign)}
+.sw:focus-visible{outline:2px solid var(--ign);outline-offset:2px}
+.out{padding:22px 20px;display:flex;flex-direction:column;gap:18px;min-width:0;background:var(--bg)}
+.out-in{position:sticky;top:calc(var(--top-h) + 16px);display:flex;flex-direction:column;gap:18px}
+.profile .k{font:600 10px/1 var(--mono);letter-spacing:.18em;color:var(--dim)}
+.profile .name{font:700 30px/1 var(--dinc);letter-spacing:.06em;text-transform:uppercase;margin-top:8px}
+.profile .name span{color:var(--ign)}
+.profile .count{font:500 11px/1.4 var(--mono);color:var(--dim);margin-top:8px;letter-spacing:.06em}
+.term{background:var(--card);border:1px solid var(--line2);padding:14px;font:500 12.5px/1.6 var(--mono);color:var(--dim);min-height:132px;overflow-wrap:anywhere}
+.term .cmd{color:var(--fg);display:block}
+.term .ok{color:var(--ign);display:block}
+.caret{display:inline-block;width:7px;height:14px;background:var(--ign);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.replay{align-self:flex-start;font:600 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--fg);background:var(--card);border:1px solid var(--line2);padding:8px 11px;cursor:pointer}
+.replay:hover{border-color:var(--ign);color:var(--ign)}
+.replay:focus-visible{outline:2px solid var(--ign);outline-offset:2px}
+.mock-foot{padding:10px 16px;border-top:1px solid var(--line);font:500 11px/1.4 var(--mono);color:var(--dim);letter-spacing:.06em}
+
+/* ===== lookup ===== */
+.lookup{margin-top:52px}
+.lookup .lk{font:700 clamp(26px,3.4vw,38px)/.95 var(--dinc);text-transform:uppercase;letter-spacing:.02em;margin:12px 0 14px}
+.ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px}
+.way{background:var(--card);border:1px solid var(--line2);padding:20px 20px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.way .k{font:600 10px/1.3 var(--mono);letter-spacing:.18em;color:var(--ign);text-transform:uppercase}
+.way .t{font:700 24px/1 var(--dinc);letter-spacing:.06em;text-transform:uppercase}
+.way p{font-size:14px;color:var(--dim)}
+.way .lvl{align-self:flex-start;font:600 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg);border:1px solid var(--line2);background:var(--bg);padding:6px 8px}
+.ex{margin-top:auto;background:var(--bg);border:1px solid var(--line);padding:12px 14px;font:500 12px/1.65 var(--mono);color:var(--dim);overflow-wrap:anywhere}
+.ex span{display:block}
+.ex .u{color:var(--fg)}
+.ex .ok{color:var(--ign)}
+.ex .ind{padding-left:2ch}
+.lofty{margin-top:12px;background:var(--card);border:1px solid var(--line);border-left:2px solid var(--ign);padding:14px 18px;font-size:15px}
+.lofty .k{font:600 10.5px/1 var(--mono);letter-spacing:.16em;color:var(--ign);text-transform:uppercase;margin-right:8px}
+
+/* ===== hero halves + steps ===== */
+.halves{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:34px;max-width:900px}
+.half{background:var(--card);border:1px solid var(--line2);padding:20px 20px 18px;display:flex;flex-direction:column;gap:8px}
+.half .k{font:600 10px/1.3 var(--mono);letter-spacing:.18em;color:var(--ign);text-transform:uppercase}
+.half .t{font:700 24px/1 var(--dinc);letter-spacing:.06em;text-transform:uppercase}
+.half p{font-size:14px;color:var(--dim)}
+.half code,.step code{font:600 12.5px/1 var(--mono);color:var(--fg)}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pills span{font:600 10.5px/1 var(--mono);letter-spacing:.06em;color:var(--fg);border:1px solid var(--line2);background:var(--bg);padding:6px 8px}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;counter-reset:s}
+.step{background:var(--card);border:1px solid var(--line);padding:18px 18px 16px;display:flex;flex-direction:column;gap:6px}
+.step .n{font:600 10px/1 var(--mono);letter-spacing:.18em;color:var(--ign)}
+.step .t{font:700 22px/1 var(--dinc);letter-spacing:.08em;text-transform:uppercase}
+.step p{font-size:14px;color:var(--dim)}
+
+/* ===== what exists ===== */
+.exists{list-style:none;border-top:1px solid var(--line)}
+.exists li{display:grid;grid-template-columns:230px minmax(0,1fr) minmax(0,1fr);gap:20px;padding:16px 0;border-bottom:1px solid var(--line);font-size:14px}
+.exists .nm{font:700 16px/1.2 var(--dinc);letter-spacing:.08em;text-transform:uppercase}
+.exists .nm a{text-decoration:none;border-bottom:1px solid var(--line2)}
+.exists .nm a:hover{color:var(--ign);border-color:var(--ign)}
+.exists .nm small{display:block;font:600 9.5px/1.4 var(--mono);letter-spacing:.14em;color:var(--ign);margin-top:6px}
+.exists .does{color:var(--dim)}
+.exists .gap{color:var(--fg)}
+.exists .gap::before{content:"GAP · ";font:600 10px/1 var(--mono);letter-spacing:.14em;color:var(--ign)}
+.exists li.top{background:var(--card);border:1px solid var(--ign);padding:16px;margin:10px 0}
+.exists-head{display:grid;grid-template-columns:230px minmax(0,1fr) minmax(0,1fr);gap:20px;font:600 10px/1 var(--mono);letter-spacing:.18em;color:var(--dim);padding-bottom:10px}
+
+/* ===== focus ===== */
+.focus{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:22px;max-width:720px}
+.focus div{border:1px solid var(--line2);background:var(--card);padding:16px 12px;font:700 15px/1 var(--dinc);letter-spacing:.14em;text-transform:uppercase;text-align:center;color:var(--dim)}
+.focus div.pick{border-color:var(--ign);border-width:2px;background:var(--card);color:var(--ign)}
+.focus div.pick::after{content:" ✓"}
+.why{max-width:680px;background:var(--card);border:1px solid var(--line);border-left:2px solid var(--ign);padding:18px 20px;font-size:15px}
+.why p + p{margin-top:10px}
+.why .alt{font-size:13.5px;color:var(--dim)}
+
+/* ===== roadmap ===== */
+.road{list-style:none;border-top:1px solid var(--line)}
+.road li{display:grid;grid-template-columns:140px 190px minmax(0,1fr);gap:20px;align-items:start;padding:18px 0;border-bottom:1px solid var(--line)}
+.road .d{font:700 22px/1 var(--dinc);letter-spacing:.08em;text-transform:uppercase}
+.road .m{font:600 11px/1.5 var(--mono);letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
+.road .w{font-size:14px;color:var(--dim)}
+.road .w b{color:var(--fg);font-weight:600}
+.road li.key .d,.road li.key .m{color:var(--ign)}
+.scope{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:26px}
+.scope > div{background:var(--card);border:1px solid var(--line);padding:18px 18px 16px}
+.scope h4{font:700 16px/1 var(--dinc);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.scope .v1 h4{color:var(--ign)}
+.scope ul{list-style:none;display:grid;gap:7px;font-size:13.5px;color:var(--dim)}
+.scope li{padding-left:14px;position:relative}
+.scope li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:1px;background:var(--fg)}
+.scope .out-list li{text-decoration:none}
+
+/* ===== stack ===== */
+.stack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tool{background:var(--card);border:1px solid var(--line);padding:16px 16px 14px;display:flex;flex-direction:column;gap:6px}
+.tool .t{font:700 16px/1.15 var(--dinc);letter-spacing:.08em;text-transform:uppercase}
+.tool .r{font:600 9.5px/1.3 var(--mono);letter-spacing:.14em;color:var(--ign);text-transform:uppercase}
+.tool p{font-size:13.5px;color:var(--dim)}
+.arch{margin-top:22px;background:var(--card);border:1px solid var(--line);padding:16px 18px;font:500 12px/1.7 var(--mono);color:var(--dim);overflow-x:auto;white-space:pre}
+.arch b{color:var(--fg);font-weight:600}
+
+/* ===== risks ===== */
+.risks{list-style:none;display:grid;gap:10px}
+.risks li{background:var(--card);border:1px solid var(--line);padding:18px 20px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px}
+.risks .n{font:600 11px/1.6 var(--mono);color:var(--ign);letter-spacing:.12em}
+.risks b{font:700 16px/1.2 var(--dinc);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px}
+.risks p{font-size:14px;color:var(--dim)}
+.risks p + p{margin-top:6px}
+.src{margin-top:26px;font-size:13px;color:var(--dim)}
+.src a{color:var(--fg)}
+
+@media (max-width:860px){
+  .people,.scope,.stack,.steps,.halves,.ways{grid-template-columns:1fr}
+  .mock-body{grid-template-columns:1fr}
+  .out-in{position:static}
+  .contents{border-right:0;border-bottom:1px solid var(--line)}
+  .road li{grid-template-columns:1fr;gap:6px}
+  .exists-head{display:none}
+  .exists li{grid-template-columns:1fr;gap:6px}
+}
+@media (max-width:640px){
+  :root{--top-h:76px;--hud-h:52px}
+  .topbar{flex-direction:column;justify-content:center;align-items:flex-start;gap:10px;padding:0 18px}
+  .wordmark{font-size:15px;letter-spacing:.16em}
+  .topnav{gap:18px}
+  .topnav a{font-size:10px;letter-spacing:.14em}
+  .hud{font-size:9px;letter-spacing:.12em}
+  .focus{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{padding:56px 0 44px}
+  .sec{padding:54px 0}
+  .items{padding-left:20px}
+  .grp-row{padding-left:16px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.caret{animation:none}.sw,.sw::after,.chev svg,.tbtn svg{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="wordmark" href="index.html">Proposal · Hewitt Watkins</a>
+  <nav class="topnav" aria-label="Pages">
+    <a href="index.html">Home</a>
+    <a href="setup.html" aria-current="page">Setup Builder</a>
+    <a href="tax.html">Tax Calendar</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- 1. ONE-LINER -->
+  <section class="hero" aria-labelledby="h1">
+    <p class="eyebrow"><span class="idx">POTENTIAL PROJECT A</span> Claude Setup Builder: a harness marketplace</p>
+    <h1 id="h1">Your whole Claude setup.<br>Port it anywhere.</h1>
+    <span class="draft">DRAFT · edit in my words</span>
+    <p class="oneliner">Run one skill in the Claude you already use and your entire setup (instructions, skills, MCP servers, plugins, settings, memory) goes up to the site as one named setup. Install it in any new folder with one sentence, or browse a harness marketplace of other people's complete, ready-made setups.</p>
+    <div class="halves">
+      <div class="half">
+        <span class="k">1 · Upload · port your own</span>
+        <span class="t">One skill packs it all</span>
+        <p>Run <code>/publish-setup</code>. It bundles CLAUDE.md / AGENTS.md, every skill, MCP config, plugins, settings and permissions, hooks, agents and memory files. API keys become placeholders.</p>
+      </div>
+      <div class="half">
+        <span class="k">2 · Get · harness marketplace</span>
+        <span class="t">Whole setups, not pieces</span>
+        <p>Pick a setup, switch off what you don't want (down to single skills and MCP tools), then tell Claude &ldquo;install the Lab setup&rdquo; in a new folder. Use it on the site, or entirely from your own Claude through the site's MCP.</p>
+        <div class="pills" aria-label="Example setups"><span>MPCS 51238 student</span><span>Small-business accountant</span><span>Research lab</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. USERS -->
+  <section class="sec" aria-labelledby="h2">
+    <p class="eyebrow"><span class="idx">01</span> Interviews</p>
+    <h2 id="h2">What my users told me</h2>
+    <div class="people">
+      <article class="person">
+        <div><div class="k">High school student</div><div class="who">Sister</div></div>
+        <blockquote>&ldquo;don't know a ton about it.&rdquo;</blockquote>
+        <p class="note">Said the setup tool would help people like her or Mom who don't know a ton about it. A non-CS student who wants to make the most of Claude across many kinds of tasks.</p>
+        <span class="todo">[TODO: more from Sister, in her words]</span>
+      </article>
+      <article class="person">
+        <div><div class="k">Accountant</div><div class="who">Mom</div></div>
+        <blockquote>&ldquo;taking the intimidation factor out in industry.&rdquo;</blockquote>
+        <p class="note">She'd love a tool that helps her get more out of Claude.</p>
+        <span class="todo">[TODO: Mom's last time setting up Claude, in her words]</span>
+      </article>
+      <article class="person">
+        <div><div class="k">Low-level software engineer</div><div class="who">Dad</div></div>
+        <blockquote>&ldquo;needs to be resilient to change.&rdquo;</blockquote>
+        <p class="note">Claude's formats (skills, MCP, plugins) change fast, so the profiles have to survive that.</p>
+      </article>
+    </div>
+    <p class="mine">Where it started, for me: <q>last time i used claude i had to set it up for both my lab and for this class, and i wanted to port skills over from my last class, as well as mcps, but not all of it.</q> And my own take: <q>people make using claude out to be super complicated but it's really not, it's super simple in my opinion.</q></p>
+  </section>
+
+  <!-- 3. HOW IT WORKS -->
+  <section class="sec" aria-labelledby="h3">
+    <p class="eyebrow"><span class="idx">02</span> How it works</p>
+    <h2 id="h3">Upload. Share. Install.</h2>
+    <ol class="steps">
+      <li class="step"><span class="n">01 · UPLOAD</span><span class="t">Run one skill</span><p>In your current Claude, <code>/publish-setup</code> packages the whole working setup, strips secrets and pushes it to the site.</p></li>
+      <li class="step"><span class="n">02 · SHARE / BROWSE</span><span class="t">A page per setup</span><p>Each setup gets a page listing everything inside it. Keep it private, or browse other people's in the marketplace.</p></li>
+      <li class="step"><span class="n">03 · INSTALL</span><span class="t">One sentence</span><p>In a new folder: &ldquo;install the Lab setup&rdquo; (via the site's MCP or a one-line command). Claude is fully configured.</p></li>
+    </ol>
+
+    <div class="mock" aria-label="Illustrative mock of a setup page">
+      <div class="mock-bar"><span>SETUP PAGE · MOCK</span><b>ILLUSTRATIVE ONLY</b></div>
+      <div class="mock-body">
+        <ul class="contents" id="contents"></ul>
+        <div class="out">
+          <div class="out-in">
+            <div class="profile">
+              <div class="k">SETUP</div>
+              <div class="name">Hewitt's <span>MPCS 51238</span> setup</div>
+              <div class="count" id="count">23 of 23 files selected</div>
+            </div>
+            <div class="term" id="term" aria-live="polite"></div>
+            <button class="replay" id="replay" type="button">&#8635; Replay</button>
+          </div>
+        </div>
+      </div>
+      <div class="mock-foot">Flip switches, or open a group to pick individual skills, MCP servers and even MCP tools. Nothing is uploaded; this only shows the idea.</div>
+    </div>
+
+    <section class="lookup" aria-labelledby="hlk">
+      <h3 class="lk" id="hlk">Install: a whole new Claude, two ways</h3>
+      <span class="draft">DRAFT · edit in my words</span>
+      <p class="lede">This goes past a plugin. You don't add it to the Claude you already have. You start in a <b>new terminal and a new project folder</b>, and it sets up a brand-new Claude with <b>everything</b>: every .md file, skill, MCP server, plugin and setting, already configured.</p>
+      <div class="ways">
+        <div class="way">
+          <span class="k">A · Download a ZIP</span>
+          <span class="t">Drop it in, run one skill</span>
+          <p>Download the whole setup as one ZIP from the website. Put it in your new project folder and run the bootstrap skill once. It unpacks everything into the right places and asks for your own keys.</p>
+          <span class="lvl">No MCP needed</span>
+          <div class="ex" aria-label="Example: install from a ZIP">
+            <span class="u">1 · download &ldquo;MPCS 51238 setup.zip&rdquo; &rarr; ~/new-class/</span>
+            <span class="u">$ cd ~/new-class &amp;&amp; claude</span>
+            <span class="u">&gt; /bootstrap-setup</span>
+            <span class="ind">wrote CLAUDE.md · AGENTS.md · memory/</span>
+            <span class="ind">12 skills · 5 MCP servers · 2 plugins · settings + hooks</span>
+            <span class="ind">? paste your SUPABASE key (or skip)</span>
+            <span class="ok">&#10003; new Claude ready · restart to load</span>
+          </div>
+        </div>
+        <div class="way">
+          <span class="k">B · Let the MCP do it</span>
+          <span class="t">Fully automatic</span>
+          <p>Add the site's MCP once, for your whole machine. In any new, empty folder, ask for a setup by name and the MCP writes the entire setup into that directory for you. Nothing to download or unzip.</p>
+          <span class="lvl">One sentence</span>
+          <div class="ex" aria-label="Example: install through the MCP">
+            <span class="u">$ mkdir ~/new-lab &amp;&amp; cd ~/new-lab &amp;&amp; claude</span>
+            <span class="u">&gt; set this folder up as my &ldquo;Lab&rdquo; setup</span>
+            <span class="ind">get_setup("Lab")</span>
+            <span class="ind">install_setup("Lab", into: "~/new-lab") · 23 files</span>
+            <span class="ok">&#10003; new Claude ready · restart to load</span>
+          </div>
+        </div>
+      </div>
+      <p class="lofty"><span class="k">Lofty goal</span>The whole website can be used through the MCP too: search the library, compare setups and install one, all from your own Claude, or all on the website for people who'd rather click. Same library, different levels of Claude users.</p>
+    </section>
+  </section>
+
+  <!-- 4. WHAT EXISTS -->
+  <section class="sec" aria-labelledby="h4x">
+    <p class="eyebrow"><span class="idx">03</span> What exists</p>
+    <h2 id="h4x">Who already does part of this</h2>
+    <span class="draft">DRAFT · edit in my words</span>
+    <p class="lede">Plugins and marketplaces share <b>bundles someone sat down and authored</b>. Skills hubs and MCP registries share <b>single pieces</b>. Nobody lets you <b>snapshot the whole setup you're already using in one step</b>, then reinstall it somewhere else or share it as a complete harness.</p>
+    <div class="exists-head" aria-hidden="true" style="margin-top:26px"><span>PRODUCT</span><span>WHAT IT DOES</span><span>WHAT'S LEFT</span></div>
+    <ul class="exists">
+      <li class="top"><div class="nm"><a href="https://code.claude.com/docs/en/plugins">Claude plugins</a><small>STRONGEST COMPETITOR</small></div><p class="does">Anthropic's own bundles of skills, MCP servers, agents and hooks, shared through marketplaces. On claude.ai they install from Customize and sync to Claude Code.</p><p class="gap">Someone has to author the bundle by hand. Your CLAUDE.md, memory and settings aren't captured, and claude.ai plugins are paid plans only.</p></li>
+      <li><div class="nm"><a href="https://support.claude.com/en/articles/12512180-use-skills-in-claude">claude.ai skills</a></div><p class="does">Upload a skill ZIP in Customize &gt; Skills, on every plan.</p><p class="gap">One skill at a time.</p></li>
+      <li><div class="nm"><a href="https://github.com/vercel-labs/skills">skills.sh · npx skills</a></div><p class="does">Directory plus CLI that installs skills into Claude Code, Codex, Cursor and more.</p><p class="gap">Single skills, not a whole setup.</p></li>
+      <li><div class="nm"><a href="https://registry.modelcontextprotocol.io/docs">MCP Registry</a> · <a href="https://smithery.ai/docs/concepts/cli">Smithery</a></div><p class="does">Catalogs of MCP servers; Smithery can write the config for you.</p><p class="gap">Single servers. Assumes you know what an MCP server is.</p></li>
+      <li><div class="nm"><a href="https://www.aitmpl.com/">claude-code-templates</a></div><p class="does">Catalog of 1,000+ components installed with npx flags.</p><p class="gap">Pieces from a catalog, not a snapshot of your own setup.</p></li>
+      <li><div class="nm"><a href="https://github.com/quinnjr/claude-code-profiles">Profile switchers</a></div><p class="does">CLIs that swap whole <code>~/.claude</code> folders per context.</p><p class="gap">Whole setups, but local only: no upload, no sharing, developers only. Shows the need is real.</p></li>
+      <li><div class="nm"><a href="https://github.com/jpcaparas/rulesync">rulesync</a> · <a href="https://cursor.com/docs/plugins">Cursor plugins</a></div><p class="does">One rules file translated into CLAUDE.md, AGENTS.md, .cursorrules; Cursor's own bundles.</p><p class="gap">Context only, or one tool only. The translator pattern is worth copying.</p></li>
+    </ul>
+    <p class="lede" style="margin-top:20px">Plan: work <b>with</b> Anthropic's formats, not against them. A setup stores the real files, and can be exported as a plugin, so if Anthropic ships more of this, setups still work.</p>
+  </section>
+
+  <!-- 5. FOCUS -->
+  <section class="sec" aria-labelledby="h4">
+    <p class="eyebrow"><span class="idx">04</span> Focus</p>
+    <h2 id="h4">Where I'm going deep</h2>
+    <div class="focus"><div>Holistic</div><div>Design</div><div class="pick">Systems</div><div>AI</div></div>
+    <div class="why">
+      <span class="draft">DRAFT · edit in my words</span>
+      <p><b>Systems.</b> The hard part is behind the UI: a skill that reliably packages a live setup and strips secrets, a setup format that outlives Claude's format changes, and an install step that rebuilds it cleanly in a fresh folder. That's what Dad's &ldquo;resilient to change&rdquo; comes down to, and it's what I most want to learn.</p>
+      <p class="alt">Runner-up: Design. If testing shows the beginner path (Sister, Mom) matters most, browsing the marketplace and picking a setup becomes the deep part instead.</p>
+      <p class="alt">Open question: the on-site agent and full site / MCP parity could make AI a co-focus. I'd still lead with Systems, since the agent is only as good as the setup format and tools underneath it.</p>
+    </div>
+  </section>
+
+  <!-- 6. ROADMAP -->
+  <section class="sec" aria-labelledby="h5">
+    <p class="eyebrow"><span class="idx">05</span> Roadmap</p>
+    <h2 id="h5">Four weeks to the fair</h2>
+    <span class="draft">DRAFT · edit in my words</span>
+    <ol class="road">
+      <li><span class="d">Nov 3–10</span><span class="m">Setup + riskiest spike</span><p class="w"><b>Spike first:</b> a <code>/publish-setup</code> skill that packages my own lab setup and strips secrets, then a <code>/bootstrap-setup</code> skill that rebuilds it from a ZIP in a fresh folder, and checking the new Claude works exactly like the old one. Then repo, Supabase schema and deploy.</p></li>
+      <li class="key"><span class="d">Nov 10–17</span><span class="m">v1 works end to end</span><p class="w">Upload your own setup, see it on a private setup page, switch single items on or off, download it as a ZIP, drop it in a new folder and run <code>/bootstrap-setup</code> to get a whole new Claude. First test: port my lab setup into this class. Sister, Mom and Dad each try it.</p></li>
+      <li><span class="d">Nov 17–24</span><span class="m">Buffer · Thanksgiving week</span><p class="w">Fix what testers hit, rewrite confusing copy, keep Supabase from pausing. Start on the MCP install path if there's time.</p></li>
+      <li class="key"><span class="d">Nov 24–Dec 1</span><span class="m">v2 at project fair</span><p class="w">Public marketplace: browse and fork other people's setups. <b>MCP install</b>: <code>search_setups</code>, <code>get_setup</code>, <code>install_setup</code>, so your own Claude can find a setup and write it into a new folder. Optional on-site agent for finding setups. Beginner path for claude.ai.</p></li>
+      <li><span class="d">After the fair</span><span class="m">Lofty goal</span><p class="w">Full parity: everything the site does also works through the MCP.</p></li>
+    </ol>
+
+    <div class="scope">
+      <div class="v1"><h4>In v1 · Nov 17</h4><ul>
+        <li>Clerk sign-up, real users</li>
+        <li><code>/publish-setup</code> skill: package + strip secrets + upload</li>
+        <li>Private setup page listing every file inside</li>
+        <li>Versioned setup manifest + files in Supabase</li>
+        <li>Download as ZIP + <code>/bootstrap-setup</code> skill sets up a new Claude in a new folder</li>
+        <li>Item-level toggles: single skills, MCP servers, MCP tools</li>
+      </ul></div>
+      <div><h4>Waits for v2 · Dec 1</h4><ul>
+        <li>Public marketplace browse</li>
+        <li>Fork someone else's setup</li>
+        <li>MCP install: the MCP writes the whole setup into a new folder automatically</li>
+        <li>On-site agent for finding setups</li>
+        <li>Beginner path for claude.ai</li>
+        <li>Starter setups for non-coders</li>
+        <li>&ldquo;This changed&rdquo; warnings when a format moves</li>
+      </ul></div>
+      <div><h4>Out</h4><ul class="out-list">
+        <li>Paid listings, ratings, payments</li>
+        <li>Storing API keys or secrets</li>
+        <li>Hosting other people's MCP servers</li>
+        <li>Team / org admin</li>
+        <li>Background auto-sync</li>
+        <li>Full site / MCP parity (after the fair)</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- 7. STACK -->
+  <section class="sec" aria-labelledby="h6">
+    <p class="eyebrow"><span class="idx">06</span> Build</p>
+    <h2 id="h6">Tech stack, MCPs, CLIs</h2>
+    <span class="draft">DRAFT · edit in my words</span>
+    <h3 class="sub">Stack</h3>
+    <div class="stack">
+      <div class="tool"><span class="r">Upload</span><span class="t">/publish-setup skill</span><p>A SKILL.md plus a small script: walks <code>~/.claude</code> and the project's <code>.claude</code>, swaps keys for <code>${VAR}</code>, uploads a manifest.</p></div>
+      <div class="tool"><span class="r">App + hosting</span><span class="t">Next.js on Vercel</span><p>One app serves setup pages, the marketplace and the MCP endpoint. Free Hobby plan; I shipped A5 on it.</p></div>
+      <div class="tool"><span class="r">Data</span><span class="t">Supabase</span><p>Setups as rows plus versioned manifests, files in Storage; row-level security keeps private setups private.</p></div>
+      <div class="tool"><span class="r">Auth</span><span class="t">Clerk</span><p>Real sign-up for v1, and it handles OAuth for MCP servers, so Claude signs in as you.</p></div>
+      <div class="tool"><span class="r">MCP server</span><span class="t">mcp-handler</span><p>Vercel's adapter puts a remote Streamable HTTP MCP server inside the Next.js app. v2 path. Tools: <code>search_setups</code>, <code>get_setup</code>, <code>install_setup</code>, which writes the whole setup into a new folder.</p></div>
+      <div class="tool"><span class="r">On-site agent · v2</span><span class="t">Vercel AI SDK + Claude API</span><p>The website's lookup agent needs a model API. It calls the same tools as the MCP, on a free or low-limit budget with a hard spending cap.</p></div>
+      <div class="tool"><span class="r">Format layer</span><span class="t">Zod schemas</span><p>One setup manifest schema plus a translator per target, so a format change touches one file.</p></div>
+    </div>
+    <h3 class="sub">MCP servers I'll build with</h3>
+    <div class="stack">
+      <div class="tool"><span class="r">Database</span><span class="t">Supabase MCP</span><p>Schema, migrations and RLS checks without leaving Claude Code.</p></div>
+      <div class="tool"><span class="r">Deploys</span><span class="t">Vercel MCP</span><p>Deploy status and runtime logs when the MCP endpoint breaks.</p></div>
+      <div class="tool"><span class="r">Testing</span><span class="t">Playwright MCP</span><p>Click through sign-up, setup pages and the marketplace at phone and desktop sizes.</p></div>
+      <div class="tool"><span class="r">Source</span><span class="t">GitHub MCP</span><p>Read real plugin and skill repos to see how setups are laid out; issues for tester feedback.</p></div>
+    </div>
+    <h3 class="sub">CLIs</h3>
+    <div class="stack">
+      <div class="tool"><span class="t">vercel</span><p>Deploys, env vars, logs.</p></div>
+      <div class="tool"><span class="t">supabase</span><p>Local database and migrations.</p></div>
+      <div class="tool"><span class="t">gh</span><p>Repo, PRs, issues.</p></div>
+      <div class="tool"><span class="t">claude mcp add</span><p>Connect my own server to Claude Code the way a user would.</p></div>
+      <div class="tool"><span class="t">MCP Inspector</span><p><code>npx @modelcontextprotocol/inspector</code> to test tools before Claude calls them.</p></div>
+    </div>
+    <div class="arch" aria-label="Architecture sketch"><b>Claude (lab folder)</b> ── /publish-setup ──▶ strip secrets ──▶ <b>Next.js on Vercel</b> ──▶ <b>Supabase</b> (setups, files)
+                                                              │
+<b>browser</b> ── setup page · toggles · lookup agent (AI SDK) ──────┤
+                                                              │
+<b>Claude (new folder)</b> ── "install the Lab setup" ──▶ /api/mcp  (mcp-handler + Clerk OAuth)
+     search_setups · get_setup · install_setup  (the agent on the site uses the same tools)
+     ◀── manifest: CLAUDE.md, AGENTS.md, .claude/skills/*, .mcp.json, plugins, settings.json, hooks
+     └─ Claude writes the files; you approve each one, then fill in your own keys</div>
+  </section>
+
+  <!-- 8. RISKS -->
+  <section class="sec" aria-labelledby="h7" style="border-bottom:0">
+    <p class="eyebrow"><span class="idx">07</span> Open questions</p>
+    <h2 id="h7">Open questions &amp; risks</h2>
+    <span class="draft">DRAFT · edit in my words</span>
+    <ul class="risks">
+      <li><span class="n">Q-01</span><div><b>What's different from Claude plugins?</b><p>Plugins are the closest thing and they're Anthropic's own, but someone has to author each one. My bet: snapshot the setup you already use, including CLAUDE.md, memory and settings, in one step. A setup can be exported as a plugin.</p></div></li>
+      <li><span class="n">Q-02</span><div><b>Who is it for?</b><p>Power users porting their own setups (me), or non-technical people like Sister and Mom installing someone else's? v1 is porting your own; the marketplace is what could serve beginners.</p></div></li>
+      <li><span class="n">R-01</span><div><b>Secret leakage</b><p>A live setup is full of API keys and tokens, in <code>.mcp.json</code>, settings and sometimes plain .md files. Upload must swap them for <code>${VAR}</code> placeholders, show what it found, and never store the real values.</p></div></li>
+      <li><span class="n">R-02</span><div><b>Absolute paths</b><p>Setups point at things like <code>/Users/me/...</code>. They need rewriting to relative or <code>~</code> paths on upload, or the install breaks on anyone else's machine.</p></div></li>
+      <li><span class="n">R-03</span><div><b>Setups depend on the machine</b><p>Local MCP servers, CLIs and plugins may need Node, Python or a binary that's installed on my laptop but not yours. The setup page has to list those requirements, and install has to check for them.</p></div></li>
+      <li><span class="n">R-04</span><div><b>claude.ai can't write local files</b><p>A remote MCP connector runs from Anthropic's cloud and can't write files on your computer. Free plans get one custom connector, and plugins need a paid plan. So install is Claude Code first; the claude.ai path is probably a download plus a connector that serves the setup in chat.</p></div></li>
+      <li><span class="n">R-05</span><div><b>Formats change fast</b><p>Dad: it &ldquo;needs to be resilient to change.&rdquo; Plugins launched in Oct 2025 and later gained skills; slash commands folded into skills; <code>.dxt</code> was renamed <code>.mcpb</code>; the MCP spec has had four revisions since March 2025, several breaking. Fix: a versioned setup manifest plus translators.</p></div></li>
+      <li><span class="n">R-06</span><div><b>Trust</b><p>Installing someone else's setup means their skills, hooks and MCP servers run as you. Only my own setups in v1, and Claude asks before each file write.</p></div></li>
+      <li><span class="n">R-07</span><div><b>MCP sign-in and free tiers</b><p>OAuth discovery for remote MCP breaks easily. Supabase Free pauses after a week without activity, right over Thanksgiving. Vercel Hobby and Clerk's free 50k users are plenty.</p></div></li>
+      <li><span class="n">R-08</span><div><b>On-site agent cost and abuse</b><p>Every lookup on the website is a paid model call. It needs sign-in, per-user rate limits and a hard spending cap, and the agent can only call the same search and install tools as the MCP.</p></div></li>
+    </ul>
+    <p class="src">Research notes with sources: <code>proposal/research-setup.md</code>.</p>
+  </section>
+
+</main>
+
+<div class="hud" role="contentinfo"><i aria-hidden="true"></i><span>MPCS 51238 · DESIGN, BUILD, SHIP · PROJECT PROPOSAL · DRAFT</span></div>
+
+<script>
+(function(){
+  var GROUPS = [
+    {id:'ctx', name:'Context files', sum:'CLAUDE.md · AGENTS.md · memory/MEMORY.md',
+     items:[{n:'CLAUDE.md'},{n:'AGENTS.md'},{n:'memory/MEMORY.md'}]},
+    {id:'skills', name:'Skills', sum:'pdf · xlsx · code-review · frontend-design · a5-catch-up · +7',
+     items:['pdf','xlsx','code-review','frontend-design','a5-catch-up','docx','pptx','dataviz','simplify','security-review','skill-creator','webapp-testing'].map(function(n){ return {n:n}; })},
+    {id:'mcp', name:'MCP servers', sum:'github · supabase · vercel · playwright · context7', open:true,
+     items:[
+       {n:'github', tools:[['repos',1],['issues',1],['pull requests',1]]},
+       {n:'supabase', tools:[['read-only',1],['execute_sql',1],['apply_migration',0]], open:true},
+       {n:'vercel', tools:[['deployments',1],['logs',1],['env vars',0]]},
+       {n:'playwright', tools:[['navigate',1],['screenshot',1]]},
+       {n:'context7', tools:[['resolve-library-id',1],['get-library-docs',1]]}
+     ]},
+    {id:'plug', name:'Plugins', sum:'vercel · clerk', items:[{n:'vercel'},{n:'clerk'}]},
+    {id:'set', name:'Settings + hooks', sum:'settings.json · permissions · 2 hooks · keys → ${VAR}',
+     items:[{n:'settings.json', note:'permissions · 2 hooks'}]}
+  ];
+  var SVG = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M3 1.5 6.5 5 3 8.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+  var list = document.getElementById('contents');
+  var count = document.getElementById('count');
+  var term = document.getElementById('term');
+  var replay = document.getElementById('replay');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var TOTAL = 0, gen = 0;
+
+  function mk(tag, cls, text){ var d = document.createElement(tag); if (cls) d.className = cls; if (text != null) d.textContent = text; return d; }
+  function toggleOpen(btn, panel, open){ btn.setAttribute('aria-expanded', open ? 'true' : 'false'); panel.hidden = !open; }
+
+  GROUPS.forEach(function(g){
+    TOTAL += g.items.length;
+    var li = mk('li', 'grp'); li.id = 'g-' + g.id;
+    var row = mk('div', 'grp-row');
+    var sw = mk('button', 'sw'); sw.type = 'button'; sw.setAttribute('role', 'checkbox'); sw.setAttribute('aria-label', 'Include all ' + g.name);
+    var txt = mk('div', 'grp-txt'); txt.appendChild(mk('div', 'gn', g.name)); txt.appendChild(mk('div', 'gf', g.sum));
+    var gc = mk('span', 'gc');
+    var chev = mk('button', 'chev'); chev.type = 'button'; chev.innerHTML = SVG;
+    chev.setAttribute('aria-label', 'Show ' + g.items.length + ' ' + g.name.toLowerCase());
+    chev.setAttribute('aria-controls', 'items-' + g.id);
+    row.appendChild(sw); row.appendChild(txt); row.appendChild(gc); row.appendChild(chev);
+    var ul = mk('ul', 'items' + (g.items.some(function(i){ return i.tools || i.note; }) ? ' wide' : '')); ul.id = 'items-' + g.id;
+    ul.setAttribute('aria-label', g.name);
+    g.items.forEach(function(it, k){
+      var ili = mk('li', it.tools ? 'srv' : '');
+      var lab = mk('label', 'it');
+      var cb = mk('input'); cb.type = 'checkbox'; cb.checked = true;
+      lab.appendChild(cb); lab.appendChild(mk('span', null, it.n));
+      if (it.note) lab.appendChild(mk('small', null, it.note));
+      it.cb = cb; it.lab = lab;
+      cb.addEventListener('change', function(){ sync(); run(false); });
+      if (it.tools){
+        var srow = mk('div', 'srv-row'); srow.appendChild(lab);
+        var tb = mk('button', 'tbtn'); tb.type = 'button';
+        var tid = 'tools-' + g.id + '-' + k; tb.setAttribute('aria-controls', tid);
+        var tl = mk('span'); tb.appendChild(tl); tb.insertAdjacentHTML('beforeend', SVG);
+        srow.appendChild(tb); ili.appendChild(srow);
+        var chips = mk('div', 'chips'); chips.id = tid; chips.setAttribute('role', 'group'); chips.setAttribute('aria-label', it.n + ' tools');
+        it.chipEls = it.tools.map(function(t){
+          var c = mk('button', 'chip', t[0]); c.type = 'button'; c.setAttribute('aria-pressed', t[1] ? 'true' : 'false');
+          c.addEventListener('click', function(){ c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); sync(); run(false); });
+          chips.appendChild(c); return c;
+        });
+        it.tl = tl; it.tb = tb;
+        tb.addEventListener('click', function(){ toggleOpen(tb, chips, tb.getAttribute('aria-expanded') !== 'true'); });
+        toggleOpen(tb, chips, !!it.open);
+        ili.appendChild(chips);
+      } else {
+        ili.appendChild(lab);
+      }
+      ul.appendChild(ili);
+    });
+    li.appendChild(row); li.appendChild(ul); list.appendChild(li);
+    toggleOpen(chev, ul, !!g.open);
+    chev.addEventListener('click', function(){ toggleOpen(chev, ul, chev.getAttribute('aria-expanded') !== 'true'); });
+    txt.addEventListener('click', function(){ chev.click(); });
+    sw.addEventListener('click', function(){
+      var all = g.items.every(function(i){ return i.cb.checked; });
+      g.items.forEach(function(i){ i.cb.checked = !all; });
+      sync(); run(term.querySelectorAll('.ok').length === 0);
+    });
+    g.li = li; g.sw = sw; g.gc = gc;
+  });
+
+  function picked(){ var n = 0; GROUPS.forEach(function(g){ g.items.forEach(function(i){ if (i.cb.checked) n++; }); }); return n; }
+  function toolsOff(){
+    var n = 0;
+    GROUPS.forEach(function(g){ g.items.forEach(function(i){
+      if (i.tools && i.cb.checked) i.chipEls.forEach(function(c){ if (c.getAttribute('aria-pressed') === 'false') n++; });
+    }); });
+    return n;
+  }
+  function sync(){
+    GROUPS.forEach(function(g){
+      var on = g.items.filter(function(i){ return i.cb.checked; }).length, all = g.items.length;
+      g.sw.setAttribute('aria-checked', on === all ? 'true' : on === 0 ? 'false' : 'mixed');
+      g.li.classList.toggle('off', on === 0);
+      g.gc.textContent = on === all ? String(all) : on + '/' + all;
+      g.items.forEach(function(i){
+        i.lab.classList.toggle('off', !i.cb.checked);
+        if (!i.tools) return;
+        var t = i.chipEls.filter(function(c){ return c.getAttribute('aria-pressed') === 'true'; }).length;
+        i.chipEls.forEach(function(c){ c.disabled = !i.cb.checked; });
+        i.tl.textContent = i.cb.checked ? t + '/' + i.chipEls.length + ' tools' : 'off';
+        i.tb.setAttribute('aria-label', i.n + ' tools, ' + t + ' of ' + i.chipEls.length + ' on');
+      });
+    });
+    count.textContent = picked() + ' of ' + TOTAL + ' files selected';
+  }
+
+  function el(cls, text){ return mk('span', cls, text || ''); }
+  function caret(){ var c = term.querySelector('.caret'); if (c) c.remove(); term.appendChild(el('caret')); }
+  function typeLine(text, g, done){
+    var d = el('cmd'); term.appendChild(d); caret();
+    if (reduce){ d.textContent = text; done(); return; }
+    var i = 0;
+    (function step(){
+      if (g !== gen) return;
+      if (i < text.length){ d.textContent = text.slice(0, ++i); setTimeout(step, 34); return; }
+      setTimeout(function(){ if (g === gen) done(); }, 260);
+    })();
+  }
+  function okLine(text){ term.appendChild(el('ok', text)); caret(); }
+  function installPart(g){
+    typeLine('> claude, install "MPCS 51238" setup', g, function(){
+      var n = picked(), t = toolsOff();
+      okLine(n ? '✓ installed ' + n + (n === 1 ? ' file' : ' files') + (t ? ' · ' + t + (t === 1 ? ' MCP tool' : ' MCP tools') + ' off' : '') + ' · fill in your keys' : '— nothing selected to install');
+    });
+  }
+  function run(full){
+    var g = ++gen;
+    if (full){
+      term.textContent = '';
+      typeLine('> /publish-setup', g, function(){
+        okLine('✓ uploaded ' + TOTAL + ' files · keys → ${VAR}');
+        installPart(g);
+      });
+    } else {
+      if (term.querySelectorAll('.ok').length === 0){ run(true); return; }
+      while (term.children.length > 2 && term.lastChild) term.removeChild(term.lastChild);
+      installPart(g);
+    }
+  }
+  replay.addEventListener('click', function(){ run(true); });
+  sync();
+  run(true);
+})();
+</script>
+</body>
+</html>

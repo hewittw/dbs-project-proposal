@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Proposal · Hewitt Watkins · Draft</title>
+<meta name="description" content="Draft project proposal for MPCS 51238 Design, Build, Ship. Two directions, feedback wanted on both.">
+<style>
+:root{
+  --bg:#f7f6f2; --fg:#16181c; --dim:rgba(22,24,28,.70); --faint:rgba(22,24,28,.48);
+  --line:rgba(0,0,0,.10); --line2:rgba(0,0,0,.20);
+  --ign:#c2410c; --ign-soft:rgba(194,65,12,.09);
+  --card:#ffffff;
+  --din:"D-DIN","DIN Alternate","DIN Next LT Pro","Barlow","Helvetica Neue",Arial,sans-serif;
+  --dinc:"DIN Condensed","D-DIN Condensed","Barlow Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --sans:"Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  --hud-h:44px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:smooth}
+body{background-color:var(--bg);background-image:radial-gradient(rgba(22,24,28,.09) 1px,transparent 1.2px);background-size:24px 24px;background-attachment:fixed;color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.5;padding-bottom:var(--hud-h);overflow-x:hidden}
+a{color:inherit}
+::selection{background:var(--ign);color:#fff}
+main{position:relative;z-index:1}
+
+/* ===== shared top nav ===== */
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;z-index:900;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 32px;
+  background:rgba(247,246,242,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.wordmark{font:700 17px/1 var(--dinc);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:10px}
+.wordmark i{width:7px;height:7px;border-radius:50%;background:var(--ign);flex:none}
+.topnav{display:flex;gap:26px}
+.topnav a{font:700 11px/1 var(--din);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--dim);position:relative;padding:6px 0;white-space:nowrap;transition:opacity .2s}
+.topnav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.topnav a:hover{color:var(--fg)}.topnav a:hover::after{transform:scaleX(1)}
+.topnav a.active{color:var(--ign)}
+.topnav a.active::after{transform:scaleX(1)}
+a:focus-visible{outline:2px solid var(--ign);outline-offset:3px}
+
+/* ===== bottom HUD ===== */
+.hud{position:fixed;left:0;right:0;bottom:0;height:var(--hud-h);z-index:800;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 16px;
+  background:rgba(247,246,242,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);
+  font:600 10px/1.3 var(--mono);letter-spacing:.18em;color:var(--dim);text-align:center}
+.hud i{width:6px;height:6px;border-radius:50%;background:var(--ign);flex:none;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+/* ===== shared bits ===== */
+.wrap{max-width:1200px;margin:0 auto;padding-left:6vw;padding-right:6vw}
+.eyebrow{font:600 11px/1.3 var(--mono);letter-spacing:.2em;color:var(--dim);text-transform:uppercase;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.eyebrow .idx{color:var(--ign);white-space:nowrap}
+.draft{display:inline-block;font:700 9.5px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ign);border:1px solid var(--ign);padding:2px 7px;border-radius:3px;white-space:nowrap;vertical-align:middle}
+.drafted{display:block}
+.drafted .draft{margin-bottom:8px}
+.sec{padding:90px 0 40px}
+.sec-head{border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:40px}
+.sec-head h2{font:700 clamp(36px,5vw,64px)/.92 var(--dinc);text-transform:uppercase;letter-spacing:.02em;margin-top:14px}
+
+/* ===== hero ===== */
+.hero{padding:150px 0 30px}
+.hero h1{font:700 clamp(52px,9vw,124px)/.86 var(--dinc);text-transform:uppercase;letter-spacing:.01em;margin:22px 0 24px}
+.hero h1 em{font-style:normal;color:var(--ign)}
+.tag{font:400 clamp(17px,1.6vw,21px)/1.45 var(--sans);color:var(--fg);max-width:620px}
+.meta{font:500 11.5px/1.8 var(--mono);color:var(--dim);letter-spacing:.06em;margin-top:18px;text-transform:uppercase}
+.why{margin-top:22px;max-width:680px;background:var(--card);border:1px solid var(--line);border-left:2px solid var(--ign);padding:16px 18px}
+.why h2{font:600 10.5px/1.3 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.why p{font-size:15.5px;line-height:1.6}
+
+/* ===== mission cards ===== */
+.missions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:56px}
+.mcard{position:relative;display:flex;flex-direction:column;gap:16px;padding:30px 28px 26px;border:1px solid var(--line2);background:var(--card);text-decoration:none;border-color:var(--line);transition:border-color .25s,background .25s,transform .25s}
+.mcard:hover{border-color:var(--ign);background:var(--card);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.mcard .brk{position:absolute;width:12px;height:12px;border-color:var(--fg);border-style:solid;transition:border-color .25s}
+.mcard:hover .brk{border-color:var(--ign)}
+.brk.tl{top:-5px;left:-5px;border-width:1px 0 0 1px}.brk.tr{top:-5px;right:-5px;border-width:1px 1px 0 0}
+.brk.bl{bottom:-5px;left:-5px;border-width:0 0 1px 1px}.brk.br{bottom:-5px;right:-5px;border-width:0 1px 1px 0}
+.mc-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.mc-k{font:600 10px/1 var(--mono);letter-spacing:.22em;color:var(--dim)}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line2);border-radius:999px;padding:6px 12px;font:600 10px/1 var(--mono);letter-spacing:.16em;white-space:nowrap}
+.pill i{width:6px;height:6px;border-radius:50%;background:var(--ign)}
+.mcard h3{font:700 clamp(34px,4vw,54px)/.9 var(--dinc);text-transform:uppercase;letter-spacing:.02em}
+.mcard p{color:rgba(22,24,28,.86);font-size:15.5px;max-width:470px}
+.mc-spec{border-top:1px solid var(--line);margin-top:auto}
+.mc-spec div{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.mc-spec dt{font:600 10px/1.4 var(--mono);letter-spacing:.16em;color:var(--dim);text-transform:uppercase;white-space:nowrap}
+.mc-spec dd{font:700 14px/1.3 var(--din);letter-spacing:.06em;text-transform:uppercase;text-align:right}
+.mc-spec dd .draft{margin-bottom:5px}
+.mc-spec div.stack{flex-direction:column;align-items:stretch;gap:6px}
+.mc-spec div.stack dd{text-align:left;text-transform:none;letter-spacing:0;font:400 14.5px/1.5 var(--sans)}
+.mc-go{display:inline-flex;align-items:center;gap:10px;font:700 12px/1 var(--din);letter-spacing:.22em;text-transform:uppercase;color:var(--ign)}
+.mc-go span{transition:transform .25s}
+.mcard:hover .mc-go span{transform:translateX(5px)}
+
+/* ===== timeline ===== */
+.log{position:relative;padding-left:52px;list-style:none}
+.log::before{content:"";position:absolute;left:14px;top:6px;bottom:6px;width:2px;background:linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.12) 70%,var(--ign))}
+.log > li{position:relative;padding:0 0 46px}
+.log > li::before{content:"";position:absolute;left:-43px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid rgba(0,0,0,.45)}
+.log > li.now::before{background:var(--ign);border-color:var(--ign);box-shadow:0 0 0 4px rgba(194,65,12,.15)}
+.st-k{font:600 10px/1 var(--mono);letter-spacing:.22em;color:var(--dim)}
+.log h3{font:700 clamp(26px,3vw,38px)/.95 var(--dinc);text-transform:uppercase;letter-spacing:.02em;margin:10px 0 18px}
+.quotes{display:grid;gap:14px;max-width:820px}
+.q{border-left:2px solid var(--line2);padding:2px 0 2px 16px}
+.q blockquote{font-size:15.5px;line-height:1.6;color:rgba(22,24,28,.9)}
+.q .who{display:block;font:600 10px/1.4 var(--mono);letter-spacing:.16em;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+.q .who b{color:var(--fg);font-weight:600}
+.ideas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ideas .q{border:1px solid var(--line);border-left:2px solid var(--line2);padding:14px 16px;background:var(--card)}
+.crew{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.crew > div{border:1px solid var(--line);padding:16px;background:var(--card)}
+.crew .role{font:700 18px/1 var(--dinc);letter-spacing:.12em;text-transform:uppercase}
+.crew .rk{font:500 10px/1.4 var(--mono);letter-spacing:.14em;color:var(--dim);text-transform:uppercase;margin:6px 0 12px}
+.crew ul{list-style:none;display:grid;gap:10px;font-size:14.5px;color:rgba(22,24,28,.86)}
+.crew li span{display:block;font:600 9.5px/1.4 var(--mono);letter-spacing:.16em;color:var(--ign);text-transform:uppercase}
+.finalists{display:flex;gap:12px;flex-wrap:wrap}
+.finalists a{display:inline-flex;align-items:center;gap:10px;padding:13px 20px;border:1.5px solid var(--fg);background:var(--card);font:700 12px/1 var(--din);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;transition:background .25s,color .25s,border-color .25s}
+.finalists a:hover{background:var(--fg);color:var(--bg)}
+.finalists a.ign{border-color:var(--ign);background:var(--ign);color:#fff}
+.finalists a.ign:hover{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+
+/* ===== feedback ===== */
+.feedback{margin:40px 0 90px;border:1px solid var(--ign);background:var(--card);padding:28px 28px 26px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:start}
+.feedback .fk{font:700 clamp(28px,3.4vw,44px)/.9 var(--dinc);text-transform:uppercase;letter-spacing:.03em;color:var(--ign);white-space:nowrap}
+.feedback p{font-size:16px;color:var(--fg)}
+.feedback ol{margin:12px 0 0 20px;display:grid;gap:8px;font-size:15.5px}
+.feedback ol li::marker{color:var(--ign);font:700 13px var(--mono)}
+.feedback p + p{margin-top:10px}
+
+/* ===== responsive ===== */
+@media (max-width:900px){
+  .missions{grid-template-columns:minmax(0,1fr)}
+  .ideas,.crew{grid-template-columns:minmax(0,1fr)}
+  .feedback{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .topbar{height:auto;min-height:60px;flex-direction:column;align-items:flex-start;justify-content:center;gap:9px;padding:11px 18px}
+  .wordmark{font-size:15px;letter-spacing:.16em}
+  .topnav{gap:18px}
+  .topnav a{font-size:10px;letter-spacing:.14em}
+  .hero{padding-top:130px}
+  .hud{font-size:8.5px;letter-spacing:.1em}
+  .mcard{padding:24px 20px 20px}
+  .log{padding-left:40px}
+  .log > li::before{left:-31px}
+  .log::before{left:10px}
+  .wrap{padding-left:20px;padding-right:20px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="wordmark" href="index.html"><i></i>Proposal · Hewitt Watkins</a>
+  <nav class="topnav" aria-label="Pages">
+    <a href="index.html" class="active" aria-current="page">Home</a>
+    <a href="setup.html">Setup Builder</a>
+    <a href="tax.html">Tax Calendar</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="eyebrow"><span class="idx">T-00 · PRE-LAUNCH</span><span>Choose what to build</span></div>
+    <h1>Two directions.<br><em>One launch.</em></h1>
+    <p class="tag">I'm choosing between two project ideas and I want feedback on both before I commit.</p>
+    <p class="meta">Draft</p>
+    <div class="why">
+      <h2>Why these two ideas <span class="draft">DRAFT · edit in my words</span></h2>
+      <p>Both came out of my own life. I recently had to set Claude up for my lab and for this class, and moving skills and MCPs between them was harder than it should be. The tax calendar comes from my mom's world as an accountant. I talked both through with my family (Mom, Dad and my sister), and those conversations shaped where each idea is now.</p>
+    </div>
+
+    <div class="missions">
+      <a class="mcard" href="setup.html">
+        <i class="brk tl"></i><i class="brk tr"></i><i class="brk bl"></i><i class="brk br"></i>
+        <div class="mc-top"><span class="mc-k">POTENTIAL PROJECT A · IDEAS 1 + 2</span><span class="pill"><i></i>WORKING TITLE</span></div>
+        <h3>Claude Setup Builder</h3>
+        <p>A harness marketplace. Upload your <b>whole</b> current Claude setup with one skill: every .md file, skill, MCP, plugin and setting, already configured. Then install it anywhere, or grab someone else's complete setup. Not single skills or MCPs, but entire setups.</p>
+        <dl class="mc-spec">
+          <div class="stack"><dt>For</dt><dd><span class="draft">DRAFT · edit in my words</span><br>Non-technical people who want more out of Claude without the intimidation, like my sister and mom. Also students and power users who move setups between contexts.</dd></div>
+          <div><dt>Origin</dt><dd>Setup site + harness, merged</dd></div>
+        </dl>
+        <span class="mc-go">View project <span>&rarr;</span></span>
+      </a>
+      <a class="mcard" href="tax.html">
+        <i class="brk tl"></i><i class="brk tr"></i><i class="brk bl"></i><i class="brk br"></i>
+        <div class="mc-top"><span class="mc-k">POTENTIAL PROJECT B · IDEA 3</span><span class="pill"><i></i>WORKING TITLE</span></div>
+        <h3>Personal Tax Calendar</h3>
+        <p>An automatically generated tax deadline calendar built for your own situation.</p>
+        <dl class="mc-spec">
+          <div><dt>For</dt><dd>Small companies + individuals</dd></div>
+          <div><dt>Origin</dt><dd>Tax calendar idea</dd></div>
+        </dl>
+        <span class="mc-go">View project <span>&rarr;</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="journey">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="idx">FLIGHT LOG</span><span>4 stages</span></div>
+      <h2>How I got here</h2>
+    </div>
+
+    <ol class="log">
+      <li>
+        <span class="st-k">STAGE 01</span>
+        <h3>Three starting ideas</h3>
+        <div class="ideas">
+          <div class="q"><span class="who"><b>01</b> · Claude setup / skills sharing site + MCP</span>
+            <blockquote>"a skills website shop / claude setup show where you can easily have skills / entire claude directory setups and an mcp that connects so you can tell your claude to go pull stuff and now it just knows how to be. …"</blockquote></div>
+          <div class="q"><span class="who"><b>02</b> · A harness</span>
+            <blockquote>"some sort of harness. don't know much about them but want to learn a lot more - need help thinking what this would look like."</blockquote></div>
+          <div class="q"><span class="who"><b>03</b> · Personalized tax calendars</span>
+            <blockquote>"… turns out that each company and person depending on who they are and their personal finances has their own tax calendar with due dates etc. I want to create a service that automatically makes this calendar for you …"</blockquote></div>
+        </div>
+      </li>
+
+      <li>
+        <span class="st-k">STAGE 02</span>
+        <h3>Ideas 1 + 2 merge</h3>
+        <div class="quotes">
+          <div class="q"><span class="who"><b>Me</b> · the last time I set up Claude</span>
+            <blockquote>"last time i used claude i had to set it up for both my lab and for this class, and i wanted to port skills over from my last class, as well as mcps, but not all of it."</blockquote></div>
+          <div class="q"><span class="who"><b>Me</b> · the merge</span>
+            <blockquote>"what if you had some ui where you could select all the skills, context, etc, that you want this particular claude to have access to - like ui to customize your own harness, and then once you created it, a claude mcp could be used to go grab it?"</blockquote></div>
+        </div>
+      </li>
+
+      <li>
+        <span class="st-k">STAGE 03</span>
+        <h3>Three interviews</h3>
+        <div class="crew">
+          <div>
+            <div class="role">Mom</div><div class="rk">Accountant</div>
+            <ul>
+              <li><span>Setup builder</span>She'd love a tool that helps her get more out of Claude and "taking the intimidation factor out in industry."</li>
+              <li><span>Tax calendar</span>She thinks nothing like this personal calendar "is easily accessible / really exists yet."</li>
+            </ul>
+          </div>
+          <div>
+            <div class="role">Dad</div><div class="rk">Low-level software engineer</div>
+            <ul>
+              <li><span>Both ideas</span>Said software "needs to be resilient to change."</li>
+            </ul>
+          </div>
+          <div>
+            <div class="role">Sister</div><div class="rk">High school student</div>
+            <ul>
+              <li><span>Setup builder</span>Said it would help people like her or Mom who "don't know a ton about it."</li>
+            </ul>
+          </div>
+        </div>
+      </li>
+
+      <li class="now">
+        <span class="st-k">STAGE 04 · NOW</span>
+        <h3>Two finalists</h3>
+        <div class="finalists">
+          <a class="ign" href="setup.html">A · Claude Setup Builder &rarr;</a>
+          <a href="tax.html">B · Personal Tax Calendar &rarr;</a>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="wrap">
+    <div class="feedback">
+      <div class="fk">Feedback wanted</div>
+      <div>
+        <p>I'm leaning towards the first idea, but I don't know how I'd get enough data to set it up and do it.</p>
+        <p>For the second idea, all the data is out there on the IRS and other places I could scrape.</p>
+        <p>I'd love feedback on which one you think is better and more tangible.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="hud"><i></i><span>MPCS 51238 · DESIGN, BUILD, SHIP · PROJECT PROPOSAL · DRAFT</span></footer>
+
+</body>
+</html>
