@@ -321,9 +321,27 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
     </div>
   </section>
 
+  <!-- integrations -->
+  <section class="sec" id="connect" aria-labelledby="h-connect">
+    <div class="eyebrow"><span class="idx">05</span><span>Interoperability</span></div>
+    <h2 id="h-connect">Connects to the tools you already use</h2>
+    <p class="lede" style="max-width:780px">The calendar gets much better when it doesn't depend on someone typing answers. With connections to QuickBooks and other Intuit products, Salesforce, and an MCP server of its own, the same deadlines can reach everyone who touches a business's taxes.</p>
+    <div class="opts">
+      <div class="opt"><span class="k">Business owners</span><h4>Auto-filled from your books</h4><p>Connect QuickBooks and the calendar reads what it needs: entity type, whether you run payroll, and whether you pay contractors. Your dates appear without filling out a form, and they update when your business changes.</p></div>
+      <div class="opt"><span class="k">Bookkeepers</span><h4>Deadlines next to the books</h4><p>Upcoming deadlines show up as tasks and reminders where bookkeepers already work, so a 941 or 1099 date never surprises anyone. One view across all the businesses they keep books for.</p></div>
+      <div class="opt"><span class="k">Accountants</span><h4>Every client, one calendar</h4><p>Pull clients from Salesforce or other Intuit tools and see every client's deadlines in one place. This answers what Mom's colleagues said: there's no centralized system, and nothing cheap and easy.</p></div>
+    </div>
+    <ul class="stack" style="margin-top:18px">
+      <li><span class="kind">Connect</span><b>QuickBooks Online + Intuit</b><span class="why">The QuickBooks Online API (OAuth 2.0) supplies the facts that decide which deadlines apply. Intuit also publishes an <a href="https://github.com/intuit/quickbooks-online-mcp-server" target="_blank" rel="noopener">official QuickBooks MCP server</a> (preview).</span></li>
+      <li><span class="kind">Connect</span><b>Salesforce</b><span class="why">Firms that track clients in a CRM can sync client records in and push deadlines back out as tasks.</span></li>
+      <li><span class="kind">MCP</span><b>Tax Calendar MCP server</b><span class="why">Any AI assistant can ask "what's due for this business next month?" or "which clients have a 1099 deadline this week?" and get answers from the same rules table, with the source link.</span></li>
+    </ul>
+    <p class="lede" style="margin-top:14px;max-width:780px"><b>When:</b> after v1. v1 proves the rules and the calendar with manual answers. A QuickBooks connection is the first stretch for v2, and the multi-client accountant view with Salesforce comes after the fair.</p>
+  </section>
+
   <!-- 5 -->
   <section class="sec" id="focus" aria-labelledby="h-focus">
-    <div class="eyebrow"><span class="idx">05</span><span>Holistic / Design / Systems / AI</span></div>
+    <div class="eyebrow"><span class="idx">06</span><span>Holistic / Design / Systems / AI</span></div>
     <h2 id="h-focus">Focus</h2>
     <div class="focus panel">
       <div class="pick">Systems<small>Recommended</small></div>
@@ -336,7 +354,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
 
   <!-- 6 -->
   <section class="sec" id="roadmap" aria-labelledby="h-road">
-    <div class="eyebrow"><span class="idx">06</span><span>Four weeks</span></div>
+    <div class="eyebrow"><span class="idx">07</span><span>Four weeks</span></div>
     <h2 id="h-road">Roadmap</h2>
     <ol class="road">
       <li><span class="dt">Nov 3&ndash;10</span><span class="ms">Setup + riskiest part first</span>
@@ -365,6 +383,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
         <li>Admin rules editor with review step</li>
         <li>Tax-planning resources per deadline</li>
         <li>AI intake (stretch)</li>
+        <li>QuickBooks connection to auto-fill answers (stretch)</li>
         <li>A second state</li>
       </ul></div>
       <div class="sc cut panel"><h4>Out</h4><ul>
@@ -372,7 +391,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
         <li>Working out how much you owe</li>
         <li>Tax advice</li>
         <li>Fiscal-year filers, all 50 states</li>
-        <li>Accountant / multi-client view</li>
+        <li>Accountant multi-client view + Salesforce (after the fair)</li>
         <li>Native mobile app</li>
       </ul></div>
     </div>
@@ -380,7 +399,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
 
   <!-- 7 -->
   <section class="sec" id="stack" aria-labelledby="h-stack">
-    <div class="eyebrow"><span class="idx">07</span><span>Tools</span></div>
+    <div class="eyebrow"><span class="idx">08</span><span>Tools</span></div>
     <h2 id="h-stack">Tech stack, MCPs, CLIs</h2>
     <ul class="stack">
       <li><span class="kind">Stack</span><b>Next.js on Vercel</b><span class="why">Pages plus API routes, including the .ics feed route. I've shipped this stack before, and it's free on Hobby.</span></li>
@@ -399,7 +418,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
 
   <!-- 8 -->
   <section class="sec" id="risks" aria-labelledby="h-risks">
-    <div class="eyebrow"><span class="idx">08</span><span>Open questions</span></div>
+    <div class="eyebrow"><span class="idx">09</span><span>Open questions</span></div>
     <h2 id="h-risks">Risks</h2>
     <ul class="risks">
       <li><span>R1</span><div>Accuracy and liability. What happens if a deadline is wrong? <em>Every date links to its official source with a "last verified" date. "Not tax advice" goes on the page, in emails, and in every feed event. Tests check the engine against Pub 509.</em></div></li>
@@ -408,6 +427,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
       <li><span>R4</span><div>Disaster extensions are by county and come out with no schedule, and there's no IRS RSS feed. <em>v1: I add them by hand. v2: a watcher using FEMA's open data flags them for my review.</em></div></li>
       <li><span>R5</span><div>Collective already offers a free subscribable federal calendar. <em>My edge has to be personal dates, state deadlines, and change alerts.</em></div></li>
       <li><span>R6</span><div>Free-tier limits. <em>Resend allows 100 emails a day, Supabase pauses idle projects, and Google Calendar refreshes feeds slowly.</em></div></li>
+      <li><span>R7</span><div>Connecting to financial data. <em>QuickBooks and Salesforce access means OAuth, app review, and handling sensitive books. Read-only access to the few fields that decide deadlines, nothing more.</em></div></li>
     </ul>
   </section>
 
