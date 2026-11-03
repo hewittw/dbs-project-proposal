@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Project Proposal · Hewitt Watkins · Draft</title>
-<meta name="description" content="Draft project proposal for MPCS 51238 Design, Build, Ship. Two directions, feedback wanted on both.">
+<title>Project Proposal · Hewitt Watkins</title>
+<meta name="description" content="Project proposal for MPCS 51238 Design, Build, Ship. Two directions, feedback wanted on both.">
 <style>
 :root{
   --bg:#f7f6f2; --fg:#16181c; --dim:rgba(22,24,28,.70); --faint:rgba(22,24,28,.48);
@@ -148,6 +148,10 @@ a:focus-visible{outline:2px solid var(--ign);outline-offset:3px}
   *{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
 }
+.ol1{margin:22px 0 22px;max-width:820px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ign);padding:16px 20px;display:grid;gap:8px}
+.ol1 .h{font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ign)}
+.ol1 p{font-size:17px;line-height:1.45;color:var(--fg);margin:0}
+.ol1 b{font-weight:700}
 </style>
 </head>
 <body>
@@ -165,10 +169,11 @@ a:focus-visible{outline:2px solid var(--ign);outline-offset:3px}
     <div class="eyebrow"><span class="idx">T-00 · PRE-LAUNCH</span><span>Choose what to build</span></div>
     <h1>Two directions.<br><em>One launch.</em></h1>
     <p class="tag">I'm choosing between two project ideas and I want feedback on both before I commit.</p>
-    <p class="meta">Draft</p>
+    <div class="ol1" aria-label="One-line descriptions"><span class="h">One line each · the problem and the user</span><p><b>A · Claude Setup Builder:</b> rebuilding your whole Claude setup by hand for every new class, lab or job is slow and intimidating, for anyone who uses Claude in more than one place, from power users to beginners.</p><p><b>B · Personal Tax Calendar:</b> every business has its own tax deadlines and there's no centralized, cheap, intuitive way to see yours, for businesses in general, especially smaller ones.</p></div>
+    
     <div class="why">
-      <h2>Why these two ideas <span class="draft">DRAFT · edit in my words</span></h2>
-      <p>Both came out of my own life. I recently had to set Claude up for my lab and for this class, and moving skills and MCPs between them was harder than it should be. The tax calendar comes from my mom's world as an accountant. I talked both through with my family (Mom, Dad and my sister), and those conversations shaped where each idea is now.</p>
+      <h2>Why these two ideas</h2>
+      <p>Both came out of my own life. I recently had to set Claude up for my lab and for this class, and moving skills and MCPs between them was harder than it should be. The tax calendar comes from my mom's world as an accountant. I talked the setup idea through with my family (Mom, Dad and my sister), and the tax idea with my mom and two of her accountant colleagues. Those conversations shaped where each idea is now.</p>
     </div>
 
     <div class="missions">
@@ -178,7 +183,7 @@ a:focus-visible{outline:2px solid var(--ign);outline-offset:3px}
         <h3>Claude Setup Builder</h3>
         <p>A harness marketplace. Upload your <b>whole</b> current Claude setup with one skill: every .md file, skill, MCP, plugin and setting, already configured. Then install it anywhere, or grab someone else's complete setup. Not single skills or MCPs, but entire setups.</p>
         <dl class="mc-spec">
-          <div class="stack"><dt>For</dt><dd><span class="draft">DRAFT · edit in my words</span><br>Non-technical people who want more out of Claude without the intimidation, like my sister and mom. Also students and power users who move setups between contexts.</dd></div>
+          <div class="stack"><dt>For</dt><dd>Non-technical people who want more out of Claude without the intimidation, like my sister and mom. Also students and power users who move setups between contexts.</dd></div>
           <div><dt>Origin</dt><dd>Setup site + harness, merged</dd></div>
         </dl>
         <span class="mc-go">View project <span>&rarr;</span></span>
@@ -277,7 +282,7 @@ a:focus-visible{outline:2px solid var(--ign);outline-offset:3px}
   </section>
 </main>
 
-<footer class="hud"><i></i><span>MPCS 51238 · DESIGN, BUILD, SHIP · PROJECT PROPOSAL · DRAFT</span></footer>
+<footer class="hud"><i></i><span>MPCS 51238 · DESIGN, BUILD, SHIP · PROJECT PROPOSAL</span></footer>
 
 </body>
 </html>

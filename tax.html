@@ -184,6 +184,10 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
   .hud i{display:none}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.ol1{margin:22px 0 22px;max-width:820px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ign);padding:16px 20px;display:grid;gap:8px}
+.ol1 .h{font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ign)}
+.ol1 p{font-size:17px;line-height:1.45;color:var(--fg);margin:0}
+.ol1 b{font-weight:700}
 </style>
 </head>
 <body>
@@ -200,12 +204,12 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
 <main>
   <div class="eyebrow"><span class="idx">POTENTIAL PROJECT B</span><span>PERSONAL TAX CALENDAR</span></div>
   <h1>Your own<br>tax calendar</h1>
+  <div class="ol1" aria-label="One-line description"><span class="h">One line · the problem and the user</span><p><b>Problem:</b> every business has its own tax deadlines depending on what it does, and there's no centralized, cheap, intuitive way to see yours. <b>User:</b> businesses in general, especially smaller ones without someone tracking every date for them.</p></div>
 
   <!-- 1 -->
   <section id="one-line" aria-labelledby="h-one">
     <div class="eyebrow"><span class="idx">01</span><span id="h-one">One-line description</span></div>
     <p class="oneliner" style="margin-top:18px">Every business has its own tax calendar. Which deadlines apply depends on what you do: your entity type, state, industry, payroll, contractors and more. It's so specific that free calendars just list every date for everyone. This asks a few questions about your business, then keeps your own deadlines up to date in the calendar app you already use.</p>
-    <div class="draft-row"><span class="draft">DRAFT · edit in my words</span></div>
   </section>
 
   <!-- 2 -->
@@ -257,7 +261,6 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
     </div>
     <p class="gap"><b>The gap:</b> a free calendar for the <b>owner</b>, built from their entity type, state, payroll, and contractors, that <b>updates itself</b> when rules or disaster relief change. The personalized tools exist, but only on the accountant's side of the desk, so the accountants' read mostly holds.</p>
     <p class="note">Also checked: FinCEN's BOI report is <a href="https://www.fincen.gov/news/news-releases/fincen-permanently-ends-beneficial-ownership-reporting-requirements-millions" target="_blank" rel="noopener">no longer required for U.S. companies</a> (final rule, Aug 2026). The calendar should say so instead of listing it.</p>
-    <div class="draft-row"><span class="draft">DRAFT · edit in my words</span></div>
   </section>
 
   <!-- 4 -->
@@ -317,7 +320,6 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
       <div class="opt"><span class="k">Open option · not decided</span><h4>AI builds it</h4><p>AI reads your situation and builds the calendar for you.</p>
         <p class="lean"><b>Leaning</b>A v2 stretch. AI could fill in the intake answers, but the dates always come from the rules table, never from the model.</p></div>
     </div>
-    <div class="draft-row"><span class="draft">DRAFT · edit in my words</span></div>
   </section>
 
   <!-- 5 -->
@@ -331,7 +333,6 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
         <p>Why not AI: a wrong date from a model is a real penalty for someone. Why not Design: the intake is only five questions. The trust comes from the data being right.</p>
       </div>
     </div>
-    <div class="draft-row"><span class="draft">DRAFT · edit in my words</span></div>
   </section>
 
   <!-- 6 -->
@@ -376,7 +377,6 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
         <li>Native mobile app</li>
       </ul></div>
     </div>
-    <div class="draft-row"><span class="draft">DRAFT · edit in my words</span></div>
   </section>
 
   <!-- 7 -->
@@ -396,7 +396,6 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
       <li><span class="kind">MCP</span><b>GitHub MCP</b><span class="why">Issues for each rule to verify, PRs per feature.</span></li>
       <li><span class="kind">CLI</span><b>vercel · supabase · gh</b><span class="why">Deploys and env vars, local DB + migrations + function deploys, repo and PRs.</span></li>
     </ul>
-    <div class="draft-row"><span class="draft">DRAFT · edit in my words</span></div>
   </section>
 
   <!-- 8 -->
@@ -411,13 +410,12 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
       <li><span>R5</span><div>Collective already offers a free subscribable federal calendar. <em>My edge has to be personal dates, state deadlines, and change alerts.</em></div></li>
       <li><span>R6</span><div>Free-tier limits. <em>Resend allows 100 emails a day, Supabase pauses idle projects, and Google Calendar refreshes feeds slowly.</em></div></li>
     </ul>
-    <div class="draft-row"><span class="draft">DRAFT · edit in my words</span></div>
   </section>
 
-  <footer class="foot"><span>Draft · Hewitt Watkins</span><a href="index.html">&larr; Back to home</a></footer>
+  <footer class="foot"><span>Hewitt Watkins</span><a href="index.html">&larr; Back to home</a></footer>
 </main>
 
-<div class="hud" role="contentinfo"><span><i></i>MPCS 51238 · DESIGN, BUILD, SHIP · PROJECT PROPOSAL · DRAFT</span></div>
+<div class="hud" role="contentinfo"><span><i></i>MPCS 51238 · DESIGN, BUILD, SHIP · PROJECT PROPOSAL</span></div>
 
 <script>
 (function(){
