@@ -215,18 +215,16 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
     <div class="people">
       <article class="person panel">
         <div><h3>Mom</h3><div class="role">Accountant</div></div>
-        <blockquote>She thinks nothing like this personal calendar <q>is easily accessible / really exists yet.</q></blockquote>
-        <span class="todo">[TODO: more from Mom?]</span>
+        <blockquote><q>Nothing like this personal calendar is easily accessible, or really exists yet.</q></blockquote>
+        <p class="impact">She sees this from the accountant's side of the desk.</p>
       </article>
       <article class="person panel">
-        <div><h3>Dad</h3><div class="role">Low-level software engineer</div></div>
-        <blockquote>Software <q>needs to be resilient to change.</q></blockquote>
-        <p class="impact">IMPACT: tax deadlines and rules change every year, plus disaster extensions and state changes, so the rules should live as data that can be updated.</p>
+        <div><h3>Colleague 1</h3><div class="role">Accountant · Mom's colleague</div></div>
+        <blockquote><q>There is no centralized system.</q></blockquote>
       </article>
       <article class="person panel">
-        <div><h3>Sister</h3><div class="role">High school student</div></div>
-        <blockquote style="color:var(--dim)">Her recorded notes are about the setup builder idea, not the tax calendar.</blockquote>
-        <span class="todo">[TODO: did she say anything about the tax calendar?]</span>
+        <div><h3>Colleague 2</h3><div class="role">Accountant · Mom's colleague</div></div>
+        <blockquote><q>Nothing intuitive exists that is cheap and easy.</q></blockquote>
       </article>
     </div>
   </section>
@@ -234,7 +232,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
   <!-- 3 -->
   <section class="sec" id="exists" aria-labelledby="h-exists">
     <div class="eyebrow"><span class="idx">03</span><span>What already exists</span></div>
-    <h2 id="h-exists">Is Mom right?</h2>
+    <h2 id="h-exists">Are they right?</h2>
     <div class="exist">
       <div class="ex panel">
         <h4><a href="https://www.irs.gov/publications/p509" target="_blank" rel="noopener">IRS Pub 509 + Tax Calendar</a></h4>
@@ -257,7 +255,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
         <span class="miss">Built for the accountant, priced per seat.</span>
       </div>
     </div>
-    <p class="gap"><b>The gap:</b> a free calendar for the <b>owner</b>, built from their entity type, state, payroll, and contractors, that <b>updates itself</b> when rules or disaster relief change. The personalized tools exist, but only on the accountant's side of the desk, so Mom's read mostly holds.</p>
+    <p class="gap"><b>The gap:</b> a free calendar for the <b>owner</b>, built from their entity type, state, payroll, and contractors, that <b>updates itself</b> when rules or disaster relief change. The personalized tools exist, but only on the accountant's side of the desk, so the accountants' read mostly holds.</p>
     <p class="note">Also checked: FinCEN's BOI report is <a href="https://www.fincen.gov/news/news-releases/fincen-permanently-ends-beneficial-ownership-reporting-requirements-millions" target="_blank" rel="noopener">no longer required for U.S. companies</a> (final rule, Aug 2026). The calendar should say so instead of listing it.</p>
     <div class="draft-row"><span class="draft">DRAFT · edit in my words</span></div>
   </section>
@@ -329,7 +327,7 @@ p.lede{color:var(--dim);font-size:15.5px;max-width:620px}
     <div class="focus panel">
       <div class="pick">Systems<small>Recommended</small></div>
       <div>
-        <p>The hard part isn't the screen, it's keeping the rules right. Deadlines are formulas that change every year, move when they land on weekends and holidays, and get postponed county by county after disasters. Going deep on Systems means a versioned rules table with a source for every row, a daily background job that sends reminders and flags rule changes, and a calendar feed that updates itself. That builds Dad's "resilient to change" into the architecture.</p>
+        <p>The hard part isn't the screen, it's keeping the rules right. Deadlines are formulas that change every year, move when they land on weekends and holidays, and get postponed county by county after disasters. Going deep on Systems means a versioned rules table with a source for every row, a daily background job that sends reminders and flags rule changes, and a calendar feed that updates itself. Because the rules keep changing, they live as data that can be updated, not as hard-coded logic.</p>
         <p>Why not AI: a wrong date from a model is a real penalty for someone. Why not Design: the intake is only five questions. The trust comes from the data being right.</p>
       </div>
     </div>
