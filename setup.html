@@ -431,6 +431,7 @@ h3.sub{font:600 11px/1.3 var(--mono);letter-spacing:.18em;color:var(--dim);text-
       <div class="v1"><h4>In v1 · Nov 17</h4><ul>
         <li>Clerk sign-up, real users</li>
         <li><code>/publish-setup</code> skill: package + strip secrets + upload</li>
+        <li>Memory sort on upload: rules travel, project-specific memory stays behind (I review it)</li>
         <li>Private setup page listing every file inside</li>
         <li>Versioned setup manifest + files in Supabase</li>
         <li>Download as ZIP + <code>/bootstrap-setup</code> skill sets up a new Claude in a new folder</li>
@@ -439,6 +440,7 @@ h3.sub{font:600 11px/1.3 var(--mono);letter-spacing:.18em;color:var(--dim);text-
       <div><h4>Waits for v2 · Dec 1</h4><ul>
         <li>Public marketplace browse</li>
         <li>Fork someone else's setup</li>
+        <li>Personal store: optional exact-copy uploads (file structure + all memory) for my own setups only</li>
         <li>MCP install: the MCP writes the whole setup into a new folder automatically</li>
         <li>On-site agent for finding setups</li>
         <li>Beginner path for claude.ai</li>
@@ -504,6 +506,7 @@ h3.sub{font:600 11px/1.3 var(--mono);letter-spacing:.18em;color:var(--dim);text-
     <ul class="risks">
       <li><span class="n">Q-01</span><div><b>What's different from Claude plugins?</b><p>Plugins are the closest thing and they're Anthropic's own, but someone has to author each one. My bet: snapshot the setup you already use, including CLAUDE.md, memory and settings, in one step. A setup can be exported as a plugin.</p></div></li>
       <li><span class="n">Q-02</span><div><b>Who is it for?</b><p>Power users porting their own setups (me), or non-technical people like Sister and Mom installing someone else's? v1 is porting your own; the marketplace is what could serve beginners.</p></div></li>
+      <li><span class="n">Q-03</span><div><b>Hardest part: which memory travels?</b><p>Memory comes in two kinds. <b>Memory rules</b> are how I like Claude to work, like &ldquo;ask before deploying&rdquo; or &ldquo;never send my email anywhere,&rdquo; and they should travel with every setup. <b>Context-specific memory</b> is about one project, like file paths, deadlines and repo names, and it usually shouldn't. The goal is a setup that's more personal than a plugin but not tied to one exact file structure. On upload, the skill sorts memory into rules or context and lets me check what goes. For my own <b>personal store</b> I can sometimes keep an exact copy, file structure and all, but shared uploads only carry the rules.</p></div></li>
       <li><span class="n">R-01</span><div><b>Secret leakage</b><p>A live setup is full of API keys and tokens, in <code>.mcp.json</code>, settings and sometimes plain .md files. Upload must swap them for <code>${VAR}</code> placeholders, show what it found, and never store the real values.</p></div></li>
       <li><span class="n">R-02</span><div><b>Absolute paths</b><p>Setups point at things like <code>/Users/me/...</code>. They need rewriting to relative or <code>~</code> paths on upload, or the install breaks on anyone else's machine.</p></div></li>
       <li><span class="n">R-03</span><div><b>Setups depend on the machine</b><p>Local MCP servers, CLIs and plugins may need Node, Python or a binary that's installed on my laptop but not yours. The setup page has to list those requirements, and install has to check for them.</p></div></li>
